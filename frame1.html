@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Frame 1</title>
+    <style>
+      body {
+        background-color: #eef;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Frame 1</h2>
+    <textarea
+      id="textoFrame1"
+      rows="5"
+      cols="30"
+      placeholder="Escreva algo aqui..."
+    ></textarea>
+    <br /><br />
+    <button id="btnFrame1">Copiar para Frame 2</button>
+
+    <script>
+      // ATIVIDADE I: Frame 1 -> Frame 2
+      document.getElementById("btnFrame1").onclick = function () {
+        // Pega o valor do textarea local (Frame 1)
+        let textoF1 = document.getElementById("textoFrame1").value;
+
+        // Acessa o Frame 2 através da janela pai e escreve o valor lá
+        window.parent.frames["frame2"].document.getElementById(
+          "textoFrame2",
+        ).value = textoF1;
+      };
+
+      // ATIVIDADE II: Frame 2 -> Frame 1 (Executado a partir daqui)
+      // Como o Frame 2 pode demorar uns milissegundos a mais para carregar,
+      // dizemos ao pai para avisar quando o Frame 2 estiver pronto.
+      window.parent.document.getElementById("frame2").onload = function () {
+        // Acessa o documento interno do Frame 2
+        let docFrame2 = window.parent.frames["frame2"].document;
+
+        // Localiza o botão que está no Frame 2 e injeta a função de clique nele
+        docFrame2.getElementById("btnFrame2").onclick = function () {
+          // Quando o botão lá for clicado, pega o texto de lá...
+          let textoF2 = docFrame2.getElementById("textoFrame2").value;
+
+          // ... e cola no textarea daqui (Frame 1)
+          document.getElementById("textoFrame1").value = textoF2;
+        };
+      };
+    </script>
+  </body>
+</html>
